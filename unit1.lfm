@@ -1,8 +1,168 @@
 object Form1: TForm1
-  Left = 1101
-  Height = 240
-  Top = 100
-  Width = 320
+  Left = 1361
+  Height = 404
+  Top = -816
+  Width = 988
   Caption = 'Form1'
+  ClientHeight = 404
+  ClientWidth = 988
+  Menu = MainMenu1
   LCLVersion = '3.0.0.1'
+  object DBGridPeople: TDBGrid
+    Left = 120
+    Height = 100
+    Top = 0
+    Width = 216
+    Color = clWindow
+    Columns = <>
+    DataSource = DSPeople
+    TabOrder = 0
+  end
+  object DBGrid1: TDBGrid
+    Left = 440
+    Height = 112
+    Top = 0
+    Width = 272
+    Color = clWindow
+    Columns = <>
+    DataSource = DSPhones
+    TabOrder = 1
+  end
+  object DBGrid2: TDBGrid
+    Left = 440
+    Height = 100
+    Top = 136
+    Width = 200
+    Color = clWindow
+    Columns = <>
+    DataSource = DSTypes
+    TabOrder = 2
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = True
+    Database = SQLite3Connection1
+    Left = 24
+    Top = 152
+  end
+  object SQLite3Connection1: TSQLite3Connection
+    Connected = True
+    LoginPrompt = False
+    AfterConnect = SQLite3Connection1AfterConnect
+    DatabaseName = '/Users/steve/Public/Dev/Pascal/HelloContactsDB/database/helloContacts.db'
+    KeepConnection = False
+    Transaction = SQLTransaction1
+    AlwaysUseBigint = False
+    Left = 24
+    Top = 88
+  end
+  object QueryPeople: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'Id'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'First'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end    
+      item
+        Name = 'Last'
+        DataType = ftString
+        Precision = -1
+        Size = 255
+      end>
+    Active = True
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'SELECT'
+      'ID,'
+      'CAST("First" AS VARCHAR) As "First",'
+      'CAST("Last" AS VARCHAR) As "Last"'
+      ' FROM People ORDER BY FIRST'
+    )
+    Params = <>
+    Macros = <>
+    Left = 128
+    Top = 120
+  end
+  object QueryPhones: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'Id'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'PersonId'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'PhoneTypeID'
+        DataType = ftInteger
+        Precision = -1
+      end    
+      item
+        Name = 'Number'
+        DataType = ftInteger
+        Precision = -1
+      end>
+    Active = True
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'SELECT * FROM PhoneNumbers ORDER BY Id'
+    )
+    Params = <>
+    Macros = <>
+    Left = 240
+    Top = 120
+  end
+  object QueryTypes: TSQLQuery
+    IndexName = 'DEFAULT_ORDER'
+    MaxIndexesCount = 4
+    FieldDefs = <    
+      item
+        Name = 'Type'
+        DataType = ftMemo
+        Precision = -1
+      end>
+    Active = True
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    SQL.Strings = (
+      'SELECT Type FROM PhoneTypes ORDER BY Id'
+    )
+    Params = <>
+    Macros = <>
+    Left = 344
+    Top = 120
+  end
+  object MainMenu1: TMainMenu
+    Left = 24
+    Top = 16
+  end
+  object DSPeople: TDataSource
+    DataSet = QueryPeople
+    Left = 128
+    Top = 176
+  end
+  object DSPhones: TDataSource
+    DataSet = QueryPhones
+    Left = 240
+    Top = 176
+  end
+  object DSTypes: TDataSource
+    DataSet = QueryTypes
+    Left = 344
+    Top = 176
+  end
 end
