@@ -38,6 +38,38 @@ object Form1: TForm1
     DataSource = DSTypes
     TabOrder = 2
   end
+  object LabelContact: TLabel
+    Left = 112
+    Height = 16
+    Top = 16
+    Width = 52
+    Caption = 'Contact:'
+  end
+  object EditSearch: TEdit
+    Left = 176
+    Height = 22
+    Top = 10
+    Width = 112
+    TabOrder = 3
+    Text = 'EditSearch'
+  end
+  object ButtonSearch: TButton
+    Left = 312
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Search'
+    OnClick = ButtonSearchClick
+    TabOrder = 4
+  end
+  object ButtonAdd: TButton
+    Left = 400
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Add'
+    TabOrder = 5
+  end
   object SQLTransaction1: TSQLTransaction
     Active = True
     Database = SQLite3Connection1
