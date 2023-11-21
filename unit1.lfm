@@ -92,18 +92,7 @@ object Form1: TForm1
     MaxIndexesCount = 4
     FieldDefs = <    
       item
-        Name = 'Id'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'First'
-        DataType = ftString
-        Precision = -1
-        Size = 255
-      end    
-      item
-        Name = 'Last'
+        Name = 'Name'
         DataType = ftString
         Precision = -1
         Size = 255
@@ -113,9 +102,7 @@ object Form1: TForm1
     Transaction = SQLTransaction1
     SQL.Strings = (
       'SELECT'
-      'ID,'
-      'CAST("First" AS VARCHAR) As "First",'
-      'CAST("Last" AS VARCHAR) As "Last"'
+      '"First" || " " || "Last" AS "Name"'
       ' FROM People ORDER BY FIRST'
     )
     Params = <>
@@ -164,8 +151,9 @@ object Form1: TForm1
     FieldDefs = <    
       item
         Name = 'Type'
-        DataType = ftMemo
+        DataType = ftString
         Precision = -1
+        Size = 10
       end>
     Active = True
     Database = SQLite3Connection1

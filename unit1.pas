@@ -64,7 +64,7 @@ begin
       *
       *      'First Like "%Ste%"'
       *)
-     FilterString := 'First Like ''%' + EditSearch.Text + '%''';
+     FilterString := 'Name Like ''%' + EditSearch.Text + '%''';
      WriteLn(FilterString);
 
      (* Server Filter filters on the database side, as opposed to .Filter which
