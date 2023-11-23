@@ -98,10 +98,12 @@ object Form1: TForm1
         Size = 255
       end>
     Active = True
+    AfterOpen = QueryPeopleAfterOpen
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
       'SELECT'
+      'Id,'
       '"First" || " " || "Last" AS "Name"'
       ' FROM People ORDER BY FIRST'
     )
@@ -135,6 +137,7 @@ object Form1: TForm1
         Precision = -1
       end>
     Active = True
+    AfterOpen = QueryPhonesAfterOpen
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (

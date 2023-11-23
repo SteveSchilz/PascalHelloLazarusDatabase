@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
-  StdCtrls, SQLDB, DB, SQLite3Conn;
+  StdCtrls, SQLDB, DB, SQLite3Conn,
+  LazLogger, LazLoggerBase;
 
 type
 
@@ -77,18 +78,29 @@ procedure TForm1.DBGridPeopleCellClick(Column: TColumn);
 var
    RowIndex: Integer;
    ColIndex: Integer;
+   SelectedRow: Integer;
+   SelectedId: Integer;
    CellValue: Variant;
 
 begin
-     WriteLn('Click');
      RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
      ColIndex := Column.Index;
      CellValue := DBGridPeople.DataSource.DataSet.Fields[ColIndex].Value;
-     if (DBGridPeople.SelectedField.FieldName = 'Name') then
+     SelectedRow := DBGridPhones.DataSource.Dataset.RecNo;
+     if (SelectedRow >= 1) and (SelectedRow <= DBGridPeople.DataSource.DataSet.RecordCount) then
      begin
-         Writeln(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
-         Writeln('Name' + Column.FieldName);
+         SelectedId := DBGridPeople.Datasource.DataSet.FieldByName('Id').AsInteger;
+         DebugLn(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
+         DebugLn('Corresponding Record for Row %d = %d', [SelectedRow, SelectedId]);
      end;
+
+     QueryPhones.ServerFilter := Format('PersonId = %d', [SelectedId]);
+     DebugLn('Filtering Phone list on %s', [QueryPhones.ServerFilter]);
+     QueryPhones.ServerFiltered := true;
+     QueryPhones.Refresh();
+     DBGridPhones.Refresh();
+end;
+
 end;
 
 end.
