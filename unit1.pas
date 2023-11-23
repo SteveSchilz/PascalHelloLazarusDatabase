@@ -15,7 +15,7 @@ type
   TForm1 = class(TForm)
     ButtonSearch: TButton;
     ButtonAdd: TButton;
-    DBGrid1: TDBGrid;
+    DBGridPhones: TDBGrid;
     DBGrid2: TDBGrid;
     DBGridPeople: TDBGrid;
     DSPeople: TDataSource;
@@ -31,7 +31,6 @@ type
     SQLTransaction1: TSQLTransaction;
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
-    procedure SQLite3Connection1AfterConnect(Sender: TObject);
   private
 
   public
@@ -47,10 +46,6 @@ implementation
 
 { TForm1 }
 
-procedure TForm1.SQLite3Connection1AfterConnect(Sender: TObject);
-begin
-
-end;
 
 procedure TForm1.ButtonSearchClick(Sender: TObject);
 var
