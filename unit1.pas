@@ -30,6 +30,7 @@ type
     QueryTypes: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     procedure ButtonSearchClick(Sender: TObject);
+    procedure DBGridPeopleCellClick(Column: TColumn);
     procedure SQLite3Connection1AfterConnect(Sender: TObject);
   private
 
@@ -75,6 +76,24 @@ begin
 
      QueryPeople.refresh();
      DBGridPeople.refresh();
+end;
+
+procedure TForm1.DBGridPeopleCellClick(Column: TColumn);
+var
+   RowIndex: Integer;
+   ColIndex: Integer;
+   CellValue: Variant;
+
+begin
+     WriteLn('Click');
+     RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
+     ColIndex := Column.Index;
+     CellValue := DBGridPeople.DataSource.DataSet.Fields[ColIndex].Value;
+     if (DBGridPeople.SelectedField.FieldName = 'Name') then
+     begin
+         Writeln(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
+         Writeln('Name' + Column.FieldName);
+     end;
 end;
 
 end.

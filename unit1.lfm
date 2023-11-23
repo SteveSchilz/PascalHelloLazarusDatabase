@@ -17,6 +17,7 @@ object Form1: TForm1
     Columns = <>
     DataSource = DSPeople
     TabOrder = 0
+    OnCellClick = DBGridPeopleCellClick
   end
   object DBGrid1: TDBGrid
     Left = 480
