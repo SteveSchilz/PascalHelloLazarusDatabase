@@ -32,6 +32,8 @@ type
     SQLTransaction1: TSQLTransaction;
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
+    procedure QueryPeopleAfterOpen(DataSet: TDataSet);
+    procedure QueryPhonesAfterOpen(DataSet: TDataSet);
   private
 
   public
@@ -101,7 +103,27 @@ begin
      DBGridPhones.Refresh();
 end;
 
+procedure TForm1.QueryPeopleAfterOpen(DataSet: TDataSet);
+begin
+     if (DBGridPeople.Columns.Count >= 1) and (DBGridPeople.Columns[0].Visible) then
+     begin
+          DBGridPeople.Columns[0].Visible := false;
+          DBGridPeople.Refresh();
+     end;
+
 end;
+
+procedure TForm1.QueryPhonesAfterOpen(DataSet: TDataSet);
+begin
+     if (DBGridPhones.Columns.Count >= 1) and (DBGridPhones.Columns[0].Visible) then
+     begin
+          DBGridPhones.Columns[0].Visible := false;  // Hide Phone Id Column
+          DBGridPhones.Columns[1].Visible := false;  // Hide PersonId column
+          DBGridPhones.Refresh();
+     end;
+
+end;
+
 
 end.
 
