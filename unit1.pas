@@ -18,11 +18,9 @@ type
     ButtonSearch: TButton;
     ButtonAdd: TButton;
     DBGridPhones: TDBGrid;
-    DBGrid2: TDBGrid;
     DBGridPeople: TDBGrid;
     EditSearch: TEdit;
     LabelContact: TLabel;
-    MainMenu1: TMainMenu;
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormShow(Sender: TObject);

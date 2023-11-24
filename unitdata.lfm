@@ -94,36 +94,10 @@ object DataModule1: TDataModule1
     Left = 46
     Top = 174
   end
-  object QueryTypes: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
-    MaxIndexesCount = 4
-    FieldDefs = <    
-      item
-        Name = 'Type'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end>
-    Active = True
-    Database = SQLite3Connection1
-    Transaction = SQLTransaction1
-    SQL.Strings = (
-      'SELECT Type FROM PhoneTypes ORDER BY Id'
-    )
-    Params = <>
-    Macros = <>
-    Left = 47
-    Top = 252
-  end
   object DSPhones: TDataSource
     DataSet = QueryPhones
     Left = 149
     Top = 173
-  end
-  object DSTypes: TDataSource
-    DataSet = QueryTypes
-    Left = 149
-    Top = 252
   end
   object DSPeople: TDataSource
     DataSet = QueryPeople

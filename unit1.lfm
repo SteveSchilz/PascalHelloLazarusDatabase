@@ -6,7 +6,6 @@ object Form1: TForm1
   Caption = 'Form1'
   ClientHeight = 404
   ClientWidth = 988
-  Menu = MainMenu1
   OnShow = FormShow
   LCLVersion = '3.0.0.1'
   object DBGridPeople: TDBGrid
@@ -30,16 +29,6 @@ object Form1: TForm1
     DataSource = DataModule1.DSPhones
     TabOrder = 1
   end
-  object DBGrid2: TDBGrid
-    Left = 400
-    Height = 100
-    Top = 168
-    Width = 200
-    Color = clWindow
-    Columns = <>
-    DataSource = DataModule1.DSTypes
-    TabOrder = 2
-  end
   object LabelContact: TLabel
     Left = 112
     Height = 16
@@ -52,8 +41,8 @@ object Form1: TForm1
     Height = 22
     Top = 10
     Width = 112
-    TabOrder = 3
-    Text = 'EditSearch'
+    TabOrder = 2
+    TextHint = '(search for contacts)'
   end
   object ButtonSearch: TButton
     Left = 312
@@ -62,7 +51,7 @@ object Form1: TForm1
     Width = 75
     Caption = 'Search'
     OnClick = ButtonSearchClick
-    TabOrder = 4
+    TabOrder = 3
   end
   object ButtonAdd: TButton
     Left = 400
@@ -70,10 +59,6 @@ object Form1: TForm1
     Top = 7
     Width = 75
     Caption = 'Add'
-    TabOrder = 5
-  end
-  object MainMenu1: TMainMenu
-    Left = 728
-    Top = 232
+    TabOrder = 4
   end
 end

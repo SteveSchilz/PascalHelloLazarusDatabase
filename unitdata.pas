@@ -14,10 +14,8 @@ type
   TDataModule1 = class(TDataModule)
     DSPeople: TDataSource;
     DSPhones: TDataSource;
-    DSTypes: TDataSource;
     QueryPeople: TSQLQuery;
     QueryPhones: TSQLQuery;
-    QueryTypes: TSQLQuery;
     SQLite3Connection1: TSQLite3Connection;
     SQLTransaction1: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
