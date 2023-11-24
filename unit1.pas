@@ -85,22 +85,46 @@ var
    CellValue: Variant;
 
 begin
-     RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
-     ColIndex := Column.Index;
-     CellValue := DBGridPeople.DataSource.DataSet.Fields[ColIndex].Value;
-     SelectedRow := DBGridPhones.DataSource.Dataset.RecNo;
-     if (SelectedRow >= 1) and (SelectedRow <= DBGridPeople.DataSource.DataSet.RecordCount) then
-     begin
-         SelectedId := DBGridPeople.Datasource.DataSet.FieldByName('Id').AsInteger;
-         DebugLn(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
-         DebugLn('Corresponding Record for Row %d = %d', [SelectedRow, SelectedId]);
-     end;
+  try
+    try
+          RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
+          ColIndex := Column.Index;
+          CellValue := DBGridPeople.DataSource.DataSet.Fields[ColIndex].Value;
+          SelectedRow := DBGridPhones.DataSource.Dataset.RecNo;
+          if (SelectedRow >= 1) and (SelectedRow <= DBGridPeople.DataSource.DataSet.RecordCount) then
+          begin
+             SelectedId := DBGridPeople.Datasource.DataSet.FieldByName('Id').AsInteger;
+             DebugLn(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
+             DebugLn('Corresponding Record for Row %d = %d', [SelectedRow, SelectedId]);
+             if (SelectedId >= 1) then
+             begin
+                 QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId=%d', [SelectedId]);
+                 DebugLn('Filtering Phone list on %s', [QueryPhones.ServerFilter]);
 
-     QueryPhones.ServerFilter := Format('PersonId = %d', [SelectedId]);
-     DebugLn('Filtering Phone list on %s', [QueryPhones.ServerFilter]);
-     QueryPhones.ServerFiltered := true;
-     QueryPhones.Refresh();
-     DBGridPhones.Refresh();
+                 // TODO: This blows up on following line,
+                 //       but says problem is in the SQLite3Connection, near "Where"
+                 // TRIED:
+                 //       QueryPhones.ServerFilter := Format('PersonId = %d', [SelectedId]);
+                 //       QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId = %d', [SelectedId]);
+                 //       QueryPhones.ServerFilter := Format('[PhoneTypes].Id = %d', [SelectedId]);
+                 //
+                 QueryPhones.ServerFiltered := true;
+             end;
+          end;
+    except
+        on E: Exception do
+        begin
+          DebugLn('Exception Type: ', E.ClassName);
+          DebugLn('Exception Msg:  ', E.Message);
+          QueryPhones.ServerFiltered := false;
+          QueryPhones.ServerFilter := '';
+          end;
+    end;
+  finally
+       DebugLn('Finallly!');
+       QueryPhones.Refresh();
+       DBGridPhones.Refresh();
+  end;
 end;
 
 procedure TForm1.QueryPeopleAfterOpen(DataSet: TDataSet);
