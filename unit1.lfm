@@ -1,12 +1,13 @@
 object Form1: TForm1
-  Left = 1590
+  Left = 1586
   Height = 404
-  Top = -880
+  Top = -865
   Width = 988
   Caption = 'Form1'
   ClientHeight = 404
   ClientWidth = 988
   Menu = MainMenu1
+  OnShow = FormShow
   LCLVersion = '3.0.0.1'
   object DBGridPeople: TDBGrid
     Left = 112
@@ -15,7 +16,7 @@ object Form1: TForm1
     Width = 219
     Color = clWindow
     Columns = <>
-    DataSource = DSPeople
+    DataSource = DataModule1.DSPeople
     TabOrder = 0
     OnCellClick = DBGridPeopleCellClick
   end
@@ -26,7 +27,7 @@ object Form1: TForm1
     Width = 280
     Color = clWindow
     Columns = <>
-    DataSource = DSPhones
+    DataSource = DataModule1.DSPhones
     TabOrder = 1
   end
   object DBGrid2: TDBGrid
@@ -36,7 +37,7 @@ object Form1: TForm1
     Width = 200
     Color = clWindow
     Columns = <>
-    DataSource = DSTypes
+    DataSource = DataModule1.DSTypes
     TabOrder = 2
   end
   object LabelContact: TLabel
@@ -71,135 +72,8 @@ object Form1: TForm1
     Caption = 'Add'
     TabOrder = 5
   end
-  object SQLTransaction1: TSQLTransaction
-    Active = True
-    Database = SQLite3Connection1
-    Left = 904
-    Top = 8
-  end
-  object SQLite3Connection1: TSQLite3Connection
-    Connected = True
-    LoginPrompt = False
-    DatabaseName = '/Users/steve/Public/Dev/Pascal/HelloContactsDB/database/helloContacts.db'
-    KeepConnection = False
-    Transaction = SQLTransaction1
-    AlwaysUseBigint = False
-    Left = 816
-    Top = 8
-  end
-  object QueryPeople: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
-    MaxIndexesCount = 4
-    FieldDefs = <    
-      item
-        Name = 'Id'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'Name'
-        DataType = ftString
-        Precision = -1
-        Size = 255
-      end>
-    Active = True
-    AfterOpen = QueryPeopleAfterOpen
-    Database = SQLite3Connection1
-    Transaction = SQLTransaction1
-    SQL.Strings = (
-      'SELECT'
-      'Id,'
-      '"First" || " " || "Last" AS "Name"'
-      ' FROM People ORDER BY FIRST'
-    )
-    Params = <>
-    Macros = <>
-    Left = 808
-    Top = 80
-  end
-  object QueryPhones: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
-    MaxIndexesCount = 4
-    FieldDefs = <    
-      item
-        Name = 'Id'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'PersonId'
-        DataType = ftInteger
-        Precision = -1
-      end    
-      item
-        Name = 'Type'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end    
-      item
-        Name = 'Number'
-        DataType = ftInteger
-        Precision = -1
-      end>
-    Active = True
-    AfterOpen = QueryPhonesAfterOpen
-    Database = SQLite3Connection1
-    Transaction = SQLTransaction1
-    SQL.Strings = (
-      'SELECT'
-      '    [PhoneNumbers].Id,'
-      '    [PhoneNumbers].PersonId,'
-      '    [PhoneTypes].Type,'
-      '    [PhoneNumbers].Number'
-      ' FROM PhoneNumbers'
-      '    INNER JOIN PhoneTypes'
-      '    ON [PhoneTypes].Id = [PhoneNumbers].PhoneTypeID'
-      ''
-    )
-    Params = <>
-    Macros = <>
-    Left = 808
-    Top = 152
-  end
-  object QueryTypes: TSQLQuery
-    IndexName = 'DEFAULT_ORDER'
-    MaxIndexesCount = 4
-    FieldDefs = <    
-      item
-        Name = 'Type'
-        DataType = ftString
-        Precision = -1
-        Size = 10
-      end>
-    Active = True
-    Database = SQLite3Connection1
-    Transaction = SQLTransaction1
-    SQL.Strings = (
-      'SELECT Type FROM PhoneTypes ORDER BY Id'
-    )
-    Params = <>
-    Macros = <>
-    Left = 808
-    Top = 224
-  end
   object MainMenu1: TMainMenu
     Left = 728
     Top = 232
-  end
-  object DSPeople: TDataSource
-    DataSet = QueryPeople
-    Left = 904
-    Top = 80
-  end
-  object DSPhones: TDataSource
-    DataSet = QueryPhones
-    Left = 904
-    Top = 160
-  end
-  object DSTypes: TDataSource
-    DataSet = QueryTypes
-    Left = 904
-    Top = 224
   end
 end

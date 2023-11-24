@@ -5,6 +5,7 @@ unit Unit1;
 interface
 
 uses
+  unitData,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
   StdCtrls, SQLDB, DB, SQLite3Conn,
   LazLogger, LazLoggerBase;
@@ -19,21 +20,13 @@ type
     DBGridPhones: TDBGrid;
     DBGrid2: TDBGrid;
     DBGridPeople: TDBGrid;
-    DSPeople: TDataSource;
-    DSPhones: TDataSource;
-    DSTypes: TDataSource;
     EditSearch: TEdit;
     LabelContact: TLabel;
     MainMenu1: TMainMenu;
-    SQLite3Connection1: TSQLite3Connection;
-    QueryPeople: TSQLQuery;
-    QueryPhones: TSQLQuery;
-    QueryTypes: TSQLQuery;
-    SQLTransaction1: TSQLTransaction;
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
-    procedure QueryPeopleAfterOpen(DataSet: TDataSet);
-    procedure QueryPhonesAfterOpen(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
+    procedure HideIds();
   private
 
   public
@@ -69,10 +62,10 @@ begin
      (* Server Filter filters on the database side, as opposed to .Filter which
       * Filters the result table
       *)
-     QueryPeople.ServerFilter := FilterString;
-     QueryPeople.ServerFiltered := true;
+     DataModule1.QueryPeople.ServerFilter := FilterString;
+     DataModule1.QueryPeople.ServerFiltered := true;
 
-     QueryPeople.refresh();
+     DataModule1.QueryPeople.refresh();
      DBGridPeople.refresh();
 end;
 
@@ -98,8 +91,8 @@ begin
              DebugLn('Corresponding Record for Row %d = %d', [SelectedRow, SelectedId]);
              if (SelectedId >= 1) then
              begin
-                 QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId=%d', [SelectedId]);
-                 DebugLn('Filtering Phone list on %s', [QueryPhones.ServerFilter]);
+                 DataModule1.QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId=%d', [SelectedId]);
+                 DebugLn('Filtering Phone list on %s', [DataModule1.QueryPhones.ServerFilter]);
 
                  // TODO: This blows up on following line,
                  //       but says problem is in the SQLite3Connection, near "Where"
@@ -108,7 +101,7 @@ begin
                  //       QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId = %d', [SelectedId]);
                  //       QueryPhones.ServerFilter := Format('[PhoneTypes].Id = %d', [SelectedId]);
                  //
-                 QueryPhones.ServerFiltered := true;
+                 DataModule1.QueryPhones.ServerFiltered := true;
              end;
           end;
     except
@@ -116,38 +109,45 @@ begin
         begin
           DebugLn('Exception Type: ', E.ClassName);
           DebugLn('Exception Msg:  ', E.Message);
-          QueryPhones.ServerFiltered := false;
-          QueryPhones.ServerFilter := '';
+          DataModule1.QueryPhones.ServerFiltered := false;
+          DataModule1.QueryPhones.ServerFilter := '';
           end;
     end;
   finally
        DebugLn('Finallly!');
-       QueryPhones.Refresh();
+       DataModule1.QueryPhones.Refresh();
        DBGridPhones.Refresh();
+       HideIds();
   end;
 end;
 
-procedure TForm1.QueryPeopleAfterOpen(DataSet: TDataSet);
+procedure TForm1.FormShow(Sender: TObject);
 begin
-     if (DBGridPeople.Columns.Count >= 1) and (DBGridPeople.Columns[0].Visible) then
-     begin
-          DBGridPeople.Columns[0].Visible := false;
-          DBGridPeople.Refresh();
-     end;
-
+     HideIds();
 end;
 
-procedure TForm1.QueryPhonesAfterOpen(DataSet: TDataSet);
+(* HideIds
+ * The Database grids contain IDs so we can extract the ID values to do filtering
+ * and matching on them.
+ *
+ * This procedure hides those columns
+ *)
+procedure TForm1.HideIds();
 begin
+
+    if (DBGridPeople.Columns.Count >= 1) and (DBGridPeople.Columns[0].Visible) then
+    begin
+         DBGridPeople.Columns[0].Visible := false;
+         DBGridPeople.Refresh();
+     end;
      if (DBGridPhones.Columns.Count >= 1) and (DBGridPhones.Columns[0].Visible) then
      begin
-          DBGridPhones.Columns[0].Visible := false;  // Hide Phone Id Column
-          DBGridPhones.Columns[1].Visible := false;  // Hide PersonId column
-          DBGridPhones.Refresh();
+         DBGridPhones.Columns[0].Visible := false;  // Hide Phone Id Column
+         DBGridPhones.Columns[1].Visible := false;  // Hide PersonId column
+         DBGridPhones.Refresh();
      end;
 
 end;
-
 
 end.
 
