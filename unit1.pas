@@ -76,32 +76,38 @@ var
    SelectedRow: Integer;
    SelectedId: Integer;
    CellValue: Variant;
-
+   QueryString: String;
+   FilterString: String;
 begin
   try
     try
           RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
           ColIndex := Column.Index;
-          CellValue := DBGridPeople.DataSource.DataSet.Fields[ColIndex].Value;
-          SelectedRow := DBGridPhones.DataSource.Dataset.RecNo;
-          if (SelectedRow >= 1) and (SelectedRow <= DBGridPeople.DataSource.DataSet.RecordCount) then
+          if (RowIndex >= 1) and (RowIndex <= DBGridPeople.DataSource.DataSet.RecordCount) then
           begin
              SelectedId := DBGridPeople.Datasource.DataSet.FieldByName('Id').AsInteger;
-             DebugLn(Format('Clicked Cell: Row %d, Column %d - Value: %s', [RowIndex, ColIndex, CellValue]));
-             DebugLn('Corresponding Record for Row %d = %d', [SelectedRow, SelectedId]);
+             DebugLn('Corresponding Record for Cell(%d, %d) = %d', [RowIndex, ColIndex, SelectedId]);
              if (SelectedId >= 1) then
              begin
-                 DataModule1.QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId=%d', [SelectedId]);
-                 DebugLn('Filtering Phone list on %s', [DataModule1.QueryPhones.ServerFilter]);
+                with DataModule1.QueryPhones do
+                 begin
+                     Close();      // In Delphi you would set Active = false here
+                     sql.Clear();
+                     filterString := Format('PhoneNumbers.PersonId = %d', [SelectedId]);
+                     queryString := 'SELECT [PhoneNumbers].Id, ' +
+                             '[PhoneNumbers].PersonId, ' +
+                             '[PhoneTypes].Type, ' +
+                             '[PhoneNumbers].Number ' +
+                             'FROM PhoneNumbers ' +
+                             'INNER JOIN PhoneTypes ' +
+                             'ON [PhoneTypes].Id = [PhoneNumbers].PhoneTypeID ' +
+                             'WHERE ' + filterString;
+                     DebugLn('Filtering phone list on ', filterString);
+                     sql.text := queryString;
+                     execSql;
+                     Open();    //In Delphi you would set active:= true here
 
-                 // TODO: This blows up on following line,
-                 //       but says problem is in the SQLite3Connection, near "Where"
-                 // TRIED:
-                 //       QueryPhones.ServerFilter := Format('PersonId = %d', [SelectedId]);
-                 //       QueryPhones.ServerFilter := Format('[PhoneNumbers].PersonId = %d', [SelectedId]);
-                 //       QueryPhones.ServerFilter := Format('[PhoneTypes].Id = %d', [SelectedId]);
-                 //
-                 DataModule1.QueryPhones.ServerFiltered := true;
+                 end;
              end;
           end;
     except
@@ -109,8 +115,6 @@ begin
         begin
           DebugLn('Exception Type: ', E.ClassName);
           DebugLn('Exception Msg:  ', E.Message);
-          DataModule1.QueryPhones.ServerFiltered := false;
-          DataModule1.QueryPhones.ServerFilter := '';
           end;
     end;
   finally
