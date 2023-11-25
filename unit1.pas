@@ -72,9 +72,7 @@ procedure TFormContacts.DBGridPeopleCellClick(Column: TColumn);
 var
    RowIndex: Integer;
    ColIndex: Integer;
-   SelectedRow: Integer;
    SelectedId: Integer;
-   CellValue: Variant;
    QueryString: String;
    FilterString: String;
 begin

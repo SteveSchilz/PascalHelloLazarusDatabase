@@ -2,8 +2,8 @@ object DataModule1: TDataModule1
   OnCreate = DataModuleCreate
   OldCreateOrder = False
   Height = 373
-  HorizontalOffset = 2608
-  VerticalOffset = -845
+  HorizontalOffset = 2746
+  VerticalOffset = -809
   Width = 258
   object SQLite3Connection1: TSQLite3Connection
     Connected = True
@@ -27,7 +27,7 @@ object DataModule1: TDataModule1
     FieldDefs = <    
       item
         Name = 'Id'
-        DataType = ftInteger
+        DataType = ftAutoInc
         Precision = -1
       end    
       item
