@@ -1,0 +1,93 @@
+object FrmAddContact: TFrmAddContact
+  Left = 1976
+  Height = 240
+  Top = -910
+  Width = 320
+  Caption = 'Add Contact'
+  ClientHeight = 240
+  ClientWidth = 320
+  LCLVersion = '3.0.0.1'
+  object Panel2: TPanel
+    Left = 1
+    Height = 56
+    Top = 183
+    Width = 319
+    Caption = 'Panel2'
+    ClientHeight = 56
+    ClientWidth = 319
+    TabOrder = 1
+    object ButtonCancel: TButton
+      Left = 230
+      Height = 25
+      Top = 10
+      Width = 75
+      Caption = 'Cancel'
+      TabOrder = 1
+    end
+    object ButtonSave: TButton
+      Left = 119
+      Height = 25
+      Top = 10
+      Width = 75
+      Caption = 'Save'
+      TabOrder = 0
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 183
+    Top = 0
+    Width = 319
+    Caption = 'Panel1'
+    ClientHeight = 183
+    ClientWidth = 319
+    TabOrder = 0
+    object Label_ID: TLabel
+      Left = 20
+      Height = 16
+      Top = 20
+      Width = 15
+      Caption = 'Id:'
+    end
+    object LabelFirst: TLabel
+      Left = 20
+      Height = 16
+      Top = 54
+      Width = 59
+      Caption = 'LabelFirst'
+    end
+    object LabelLast: TLabel
+      Left = 20
+      Height = 16
+      Top = 84
+      Width = 59
+      Caption = 'LabelLast'
+    end
+    object EditID: TEdit
+      Left = 97
+      Height = 22
+      Top = 15
+      Width = 218
+      Color = clInactiveCaption
+      Enabled = False
+      TabOrder = 0
+      TextHint = 'Contact ID'
+    end
+    object EditFirst: TEdit
+      Left = 97
+      Height = 22
+      Top = 48
+      Width = 218
+      TabOrder = 1
+      TextHint = 'First Name'
+    end
+    object EditLast: TEdit
+      Left = 97
+      Height = 22
+      Top = 78
+      Width = 218
+      TabOrder = 2
+      TextHint = 'Last Name'
+    end
+  end
+end

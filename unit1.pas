@@ -5,10 +5,12 @@ unit Unit1;
 interface
 
 uses
-  unitData,
+  unitData, unitAddContact,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
   StdCtrls, SQLDB, DB, SQLite3Conn,
+  StrUtils, Types,
   LazLogger, LazLoggerBase;
+
 
 type
 
@@ -21,6 +23,7 @@ type
     DBGridPeople: TDBGrid;
     EditSearch: TEdit;
     LabelContact: TLabel;
+    procedure ButtonAddClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
@@ -66,6 +69,35 @@ begin
 
      DataModule1.QueryPeople.refresh();
      DBGridPeople.refresh();
+end;
+
+procedure TFormContacts.ButtonAddClick(Sender: TObject);
+var
+   NamesArray : TStringDynArray;
+   First:  String;
+   Last: String;
+begin
+    First := '';
+    Last := '';
+    if (EditSearch.Text <> '') then
+    begin
+        NamesArray := SplitString(EditSearch.Text, ' ');
+        if (Length(NamesArray) = 1) then
+        begin
+            First := NamesArray[0];
+        end
+        else if (Length(NamesArray) = 2) then
+        begin
+            First := NamesArray[0];
+            Last := NamesArray[1];
+        end;
+
+        frmAddContact.EditId.Text := '';
+        frmAddContact.EditFirst.Text := First;
+        frmAddContact.EditLast.Text := Last;
+        frmAddContact.ShowModal();
+    end;
+
 end;
 
 procedure TFormContacts.DBGridPeopleCellClick(Column: TColumn);

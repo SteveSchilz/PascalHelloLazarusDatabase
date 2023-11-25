@@ -60,6 +60,7 @@ object FormContacts: TFormContacts
     Top = 7
     Width = 75
     Caption = 'Add'
+    OnClick = ButtonAddClick
     TabOrder = 4
   end
 end

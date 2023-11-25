@@ -56,6 +56,14 @@
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="unitData"/>
       </Unit>
+      <Unit>
+        <Filename Value="unitaddcontact.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrmAddContact"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="unitAddContact"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
