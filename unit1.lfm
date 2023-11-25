@@ -1,11 +1,12 @@
-object Form1: TForm1
+object FormContacts: TFormContacts
   Left = 1586
   Height = 404
   Top = -865
   Width = 988
-  Caption = 'Form1'
+  Caption = 'Hello Contacts DB'
   ClientHeight = 404
   ClientWidth = 988
+  OnActivate = FormActivate
   OnShow = FormShow
   LCLVersion = '3.0.0.1'
   object DBGridPeople: TDBGrid

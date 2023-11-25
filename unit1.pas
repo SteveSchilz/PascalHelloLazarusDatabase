@@ -12,9 +12,9 @@ uses
 
 type
 
-  { TForm1 }
+  { TFormContacts }
 
-  TForm1 = class(TForm)
+  TFormContacts = class(TForm)
     ButtonSearch: TButton;
     ButtonAdd: TButton;
     DBGridPhones: TDBGrid;
@@ -23,6 +23,7 @@ type
     LabelContact: TLabel;
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
+    procedure FormActivate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure HideIds();
   private
@@ -32,16 +33,16 @@ type
   end;
 
 var
-  Form1: TForm1;
+  FormContacts: TFormContacts;
 
 implementation
 
 {$R *.lfm}
 
-{ TForm1 }
+{ TFormContacts }
 
 
-procedure TForm1.ButtonSearchClick(Sender: TObject);
+procedure TFormContacts.ButtonSearchClick(Sender: TObject);
 var
    FilterString : String;
 begin
@@ -67,7 +68,7 @@ begin
      DBGridPeople.refresh();
 end;
 
-procedure TForm1.DBGridPeopleCellClick(Column: TColumn);
+procedure TFormContacts.DBGridPeopleCellClick(Column: TColumn);
 var
    RowIndex: Integer;
    ColIndex: Integer;
@@ -123,7 +124,13 @@ begin
   end;
 end;
 
-procedure TForm1.FormShow(Sender: TObject);
+procedure TFormContacts.FormActivate(Sender: TObject);
+begin
+     DBGridPeople.Refresh();
+     DBGridPhones.Refresh();
+end;
+
+procedure TFormContacts.FormShow(Sender: TObject);
 begin
      HideIds();
 end;
@@ -134,7 +141,7 @@ end;
  *
  * This procedure hides those columns
  *)
-procedure TForm1.HideIds();
+procedure TFormContacts.HideIds();
 begin
 
     if (DBGridPeople.Columns.Count >= 1) and (DBGridPeople.Columns[0].Visible) then
