@@ -64,6 +64,11 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="unitAddContact"/>
       </Unit>
+      <Unit>
+        <Filename Value="utils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="Utils"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

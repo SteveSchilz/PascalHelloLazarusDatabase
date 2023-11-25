@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  unitData, unitAddContact,
+  UnitData, UnitAddContact, Utils,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
   StdCtrls, SQLDB, DB, SQLite3Conn,
   StrUtils, Types,
@@ -142,9 +142,8 @@ begin
     except
         on E: Exception do
         begin
-          DebugLn('Exception Type: ', E.ClassName);
-          DebugLn('Exception Msg:  ', E.Message);
-          end;
+          Utils.ShowException(E);
+        end;
     end;
   finally
        DebugLn('Finallly!');
