@@ -155,8 +155,15 @@ end;
 
 procedure TFormContacts.FormActivate(Sender: TObject);
 begin
+     // Queries used on this page need to be set to active when activating.
+     // Apparently something in the system deactivates them when another form
+     // receives focus.
+     DataModule1.EnsureMainQueriesActive();
+     DataModule1.RefreshAllData();
+
      DBGridPeople.Refresh();
      DBGridPhones.Refresh();
+     HideIds();
 end;
 
 procedure TFormContacts.FormShow(Sender: TObject);

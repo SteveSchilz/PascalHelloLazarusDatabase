@@ -18,11 +18,11 @@ type
     QueryPhones: TSQLQuery;
     SQLite3Connection1: TSQLite3Connection;
     SQLTransaction1: TSQLTransaction;
-    procedure DataModuleCreate(Sender: TObject);
+    procedure EnsureMainQueriesActive();
+    procedure RefreshAllData();
   private
 
   public
-
   end;
 
 var
@@ -34,11 +34,32 @@ implementation
 
 { TDataModule1 }
 
-procedure TDataModule1.DataModuleCreate(Sender: TObject);
+procedure TDataModule1.EnsureMainQueriesActive();
 begin
+
+     if (not QueryPeople.active) then
+     begin
+       QueryPeople.Active := true;
+     end;
+
+     if (not QueryPhones.active) then
+     begin
+       QueryPhones.Active := true;
+     end;
 
 end;
 
+// Allows customers to update all data fields without needing to know our
+// Internal Details
+procedure TDataModule1.RefreshAllData();
+
+begin
+     QueryPeople.Refresh();
+     DSPeople.DataSet.Refresh();
+
+     QueryPhones.Refresh();
+     DSPhones.DataSet.Refresh();
+end;
 
 end.
 
