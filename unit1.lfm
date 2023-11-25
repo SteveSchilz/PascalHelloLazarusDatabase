@@ -11,7 +11,7 @@ object FormContacts: TFormContacts
   LCLVersion = '3.0.0.1'
   object DBGridPeople: TDBGrid
     Left = 112
-    Height = 112
+    Height = 292
     Top = 48
     Width = 219
     Color = clWindow
@@ -43,6 +43,7 @@ object FormContacts: TFormContacts
     Top = 10
     Width = 112
     TabOrder = 2
+    Text = 'Sam Schmam'
     TextHint = '(search for contacts)'
   end
   object ButtonSearch: TButton

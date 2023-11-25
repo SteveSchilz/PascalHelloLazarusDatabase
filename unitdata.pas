@@ -17,6 +17,7 @@ type
     QueryPeople: TSQLQuery;
     QueryPhones: TSQLQuery;
     SQLite3Connection1: TSQLite3Connection;
+    QueryInsert: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     procedure EnsureMainQueriesActive();
     procedure RefreshAllData();

@@ -5,7 +5,10 @@ unit unitAddContact;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls;
+  UnitData, Utils,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+  LazLogger,
+  SQLDB;
 
 type
 
@@ -22,6 +25,8 @@ type
     LabelLast: TLabel;
     Panel1: TPanel;
     Panel2: TPanel;
+    procedure ButtonCancelClick(Sender: TObject);
+    procedure ButtonSaveClick(Sender: TObject);
   private
 
   public
@@ -37,6 +42,54 @@ implementation
 
 { TFrmAddContact }
 
+
+procedure TFrmAddContact.ButtonSaveClick(Sender: TObject);
+begin
+  if (editFirst.Text <> '') or (editLast.Text <> '') then
+  begin
+
+    try
+      try
+        with DataModule1.QueryInsert do
+        begin
+             Close();
+             Sql.Clear();
+             // NOTES:
+             //   To "Open" a query, Sql.text must be set to a select statment.
+             //   This is because open makes the result set available, and insert
+             //   statements do not have a result set.
+             //
+             //   The InsertSql.Text property also exists, apparently use Insert()
+             //    instead of ExecSQL
+             Sql.Text := 'INSERT INTO People(First, Last) ' +
+                         'VALUES(' + QuotedStr(EditFirst.Text) + ',' +
+                                     QuotedStr(EditLast.Text) + ')';
+             DebugLn(Sql.text);
+             ExecSql();           // Insert/Update use execSQL
+
+             // ApplyUpdates(); - Needed to save when editing an existing record
+             if (Transaction.Active) then
+                 begin
+                 // Cast the transaction property of the query to TSQLTr...
+                 TSQLTransaction(Transaction).Commit();
+                 end;
+        end;
+      except
+        on E: Exception do
+        begin
+          Utils.ShowException(E);
+        end;
+      end;
+    finally
+      // Nothing needed here.
+    end;
+  end;
+end;
+
+procedure TFrmAddContact.ButtonCancelClick(Sender: TObject);
+begin
+  Self.Close();
+end;
 
 end.
 

@@ -103,4 +103,13 @@ object DataModule1: TDataModule1
     Left = 153
     Top = 102
   end
+  object QueryInsert: TSQLQuery
+    FieldDefs = <>
+    Database = SQLite3Connection1
+    Transaction = SQLTransaction1
+    Params = <>
+    Macros = <>
+    Left = 47
+    Top = 250
+  end
 end
