@@ -7,6 +7,7 @@ interface
 uses
   Classes, SQLDB, SysUtils, LazLogger;
 
+  procedure DeleteUser(Q: TSQLQuery; SelectedID: Integer);
   procedure QueryPhones(Q: TSQLQuery; SelectedID: Integer);
   function GetLastInsertID(Q: TSQLQuery) : Integer;
   procedure ShowException(O: TObject);
@@ -15,9 +16,33 @@ uses
 implementation
 
 
+
 //==============================================================================
 // Database Functions
 //==============================================================================
+
+procedure DeleteUser(Q: TSQLQuery; SelectedID: Integer);
+var
+   SqlString : String;
+
+begin
+try
+    Q.Close();      // In Delphi you would set Active = false here
+    Q.sql.Clear();
+    SqlString := FORMAT('DELETE FROM People WHERE Id = %d', [SelectedID]);
+    DebugLn(SqlString);
+    Q.sql.text := SqlString;
+    Q.execSql;
+    // Delete query is automatically committed, no need for Transaction.commit
+except
+    on E: Exception do
+    begin
+        ShowException(E);
+    end;
+end;
+
+end;
+
 procedure QueryPhones(Q: TSQLQuery; SelectedId : Integer);
 var
   filterString : String;

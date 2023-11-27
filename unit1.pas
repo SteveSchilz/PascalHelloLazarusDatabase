@@ -24,10 +24,13 @@ type
     EditSearch: TEdit;
     LabelContact: TLabel;
     procedure ButtonAddClick(Sender: TObject);
+    procedure ButtonDeleteClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    function GetSelectedId(Grid : TDBGrid) : Integer;
+    function GetSelectedName(Grid : TDBGrid) : String;
     procedure HideIds();
   private
 
@@ -100,21 +103,56 @@ begin
 
 end;
 
+procedure TFormContacts.ButtonDeleteClick(Sender: TObject);
+var
+   SelectedId: Integer;
+   SelectedName: String;
+   Var OkToDelete: Integer;
+begin
+    try
+        try
+        begin
+            SelectedId := GetSelectedId(DBGridPeople);
+            if (SelectedId = -1) then
+            begin
+               MessageDlg('No User Selected to delete!', mtInformation, mbOKCancel, 0);
+            end
+            else
+            begin
+                SelectedName := GetSelectedName(DBGridPeople);
+                OkToDelete := MessageDlg('OK to Delete ' + SelectedName  + '?' + #13#10#13#10 +
+                                         '(All of their phone numbers will be deleted!)',
+                                         mtConfirmation, mbOKCancel, 0);
+                if (OkToDelete = mrOk) then
+                   begin
+                   Utils.DeleteUser(DataModule1.QueryInsert, SelectedId);
+                   end;
+            end;
+         end;
+     except
+         on E: Exception do
+         begin
+             Utils.ShowException(E);
+         end;
+     end;
+    finally
+        DataModule1.QueryPeople.Refresh();
+        DBGridPeople.Refresh();
+        HideIds();
+    end;
+end;
+
+// When the DB Grid is clicked, it filters the phones list to the selected
+// person only.
 procedure TFormContacts.DBGridPeopleCellClick(Column: TColumn);
 var
-   RowIndex: Integer;
-   ColIndex: Integer;
    SelectedId: Integer;
 begin
   try
     try
-          RowIndex := DBGridPeople.DataSource.DataSet.RecNo;
-          ColIndex := Column.Index;
-          if (RowIndex >= 1) and (RowIndex <= DBGridPeople.DataSource.DataSet.RecordCount) then
           begin
-             SelectedId := DBGridPeople.Datasource.DataSet.FieldByName('Id').AsInteger;
-             DebugLn('Corresponding Record for Cell(%d, %d) = %d', [RowIndex, ColIndex, SelectedId]);
-             if (SelectedId >= 1) then
+             SelectedId := GetSelectedId(DBGridPeople);
+             if (SelectedId <> -1) then
              begin
                 Utils.QueryPhones(DataModule1.QueryPhones, SelectedId);
              end;
@@ -126,7 +164,6 @@ begin
         end;
     end;
   finally
-       DebugLn('Finallly!');
        DataModule1.QueryPhones.Refresh();
        DBGridPhones.Refresh();
        HideIds();
@@ -150,6 +187,39 @@ procedure TFormContacts.FormShow(Sender: TObject);
 begin
      HideIds();
 end;
+
+(*
+ * Returns the current selected ID for the given DB Grid, or -1 if none.
+ *)
+function TFormContacts.GetSelectedId(Grid : TDBGrid) : Integer;
+var
+   RowIndex: Integer;
+begin
+  GetSelectedId := -1;  // Default if nothing found
+
+  RowIndex := grid.DataSource.DataSet.RecNo;
+  if (RowIndex >= 1) and (RowIndex <= grid.DataSource.DataSet.RecordCount) then
+    begin
+    GetSelectedId := grid.Datasource.DataSet.FieldByName('Id').AsInteger;
+    end;
+end;
+(*
+ * Returns the current selected Name for the given DB Grid, or empty string ('') if none.
+ *)
+function TFormContacts.GetSelectedName(Grid : TDBGrid) : String;
+var
+   RowIndex: Integer;
+begin
+  GetSelectedName := '';  // Default if nothing found
+
+  RowIndex := grid.DataSource.DataSet.RecNo;
+  if (RowIndex >= 1) and (RowIndex <= grid.DataSource.DataSet.RecordCount) then
+    begin
+    GetSelectedName := grid.Datasource.DataSet.FieldByName('Name').AsString;
+    end;
+end;
+
+
 
 (* HideIds
  * The Database grids contain IDs so we can extract the ID values to do filtering

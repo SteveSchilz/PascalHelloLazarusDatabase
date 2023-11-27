@@ -41,7 +41,7 @@ object FormContacts: TFormContacts
     Left = 176
     Height = 22
     Top = 10
-    Width = 112
+    Width = 115
     TabOrder = 2
     Text = 'Sam Schmam'
     TextHint = '(search for contacts)'
@@ -63,5 +63,14 @@ object FormContacts: TFormContacts
     Caption = 'Add'
     OnClick = ButtonAddClick
     TabOrder = 4
+  end
+  object ButtonDelete: TButton
+    Left = 487
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Delete'
+    OnClick = ButtonDeleteClick
+    TabOrder = 5
   end
 end
