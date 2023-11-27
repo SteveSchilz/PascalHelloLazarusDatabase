@@ -8,7 +8,7 @@ uses
   UnitData, UnitAddContact, Utils,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
   StdCtrls, SQLDB, DB, SQLite3Conn,
-  StrUtils, Types,
+  Types,
   LazLogger, LazLoggerBase;
 
 
@@ -78,29 +78,16 @@ end;
 procedure TFormContacts.ButtonAddClick(Sender: TObject);
 var
    NamesArray : TStringDynArray;
-   First:  String;
-   Last: String;
 begin
-    First := '';
-    Last := '';
-    if (EditSearch.Text <> '') then
-    begin
-        NamesArray := SplitString(EditSearch.Text, ' ');
-        if (Length(NamesArray) = 1) then
-        begin
-            First := NamesArray[0];
-        end
-        else if (Length(NamesArray) = 2) then
-        begin
-            First := NamesArray[0];
-            Last := NamesArray[1];
-        end;
+    NamesArray := Utils.SplitName(EditSearch.Text);
 
-        frmAddContact.EditId.Text := '';
-        frmAddContact.EditFirst.Text := First;
-        frmAddContact.EditLast.Text := Last;
-        frmAddContact.ShowModal();
-    end;
+    frmAddContact.EditId.Text := '';
+    frmAddContact.EditFirst.Text := NamesArray[0];
+    frmAddContact.EditLast.Text := NamesArray[1];
+    frmAddContact.SetEditMode(false);
+    frmAddContact.ShowModal();
+
+end;
 
 end;
 

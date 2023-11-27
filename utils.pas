@@ -5,16 +5,50 @@ unit Utils;
 interface
 
 uses
-  Classes, SQLDB, SysUtils, LazLogger;
+  Classes, SQLDB, StrUtils, SysUtils, Types, LazLogger;
+
+  function SplitName(FullName : String) : TStringDynArray;
 
   procedure DeleteUser(Q: TSQLQuery; SelectedID: Integer);
   procedure QueryPhones(Q: TSQLQuery; SelectedID: Integer);
   function GetLastInsertID(Q: TSQLQuery) : Integer;
+
   procedure ShowException(O: TObject);
 
 
 implementation
+//==============================================================================
+// General Use Functions
+//==============================================================================
+(*
+ *  Split a spring name into individual words, guaranteed to return two entries,
+ *  either or both of which may be null.
+ *)
 
+function SplitName(FullName : String) : TStringDynArray;
+var
+NamesArray: TStringDynArray;
+
+begin
+    NamesArray := SplitString(FullName, ' ');
+    if (Length(NamesArray) = 0) then
+        begin
+        SetLength(NamesArray, 2);
+        NamesArray[0] := '';
+        NamesArray[1] := '';
+        end
+     else if (Length(NamesArray) = 1) then
+        begin
+        SetLength(NamesArray, 2);
+        NamesArray[1] := '';
+        end
+     else if (Length(NamesArray) > 2) then
+         begin
+         SetLength(NamesArray, 2);
+     end;
+
+     SplitName := NamesArray;
+end;
 
 
 //==============================================================================
