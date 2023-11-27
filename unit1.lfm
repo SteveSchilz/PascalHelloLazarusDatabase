@@ -65,12 +65,21 @@ object FormContacts: TFormContacts
     TabOrder = 4
   end
   object ButtonDelete: TButton
-    Left = 487
+    Left = 593
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Delete'
     OnClick = ButtonDeleteClick
     TabOrder = 5
+  end
+  object ButtonEdit: TButton
+    Left = 492
+    Height = 25
+    Top = 7
+    Width = 75
+    Caption = 'Edit'
+    OnClick = ButtonEditClick
+    TabOrder = 6
   end
 end

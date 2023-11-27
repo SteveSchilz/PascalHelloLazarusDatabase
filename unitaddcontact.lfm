@@ -6,6 +6,7 @@ object FrmAddContact: TFrmAddContact
   Caption = 'Add Contact'
   ClientHeight = 240
   ClientWidth = 320
+  OnShow = FormShow
   LCLVersion = '3.0.0.1'
   object Panel2: TPanel
     Left = 1
@@ -92,7 +93,7 @@ object FrmAddContact: TFrmAddContact
       TabOrder = 2
       TextHint = 'Last Name'
     end
-    object LabelNew: TLabel
+    object LabelUserPrompt: TLabel
       Left = 20
       Height = 16
       Top = 11

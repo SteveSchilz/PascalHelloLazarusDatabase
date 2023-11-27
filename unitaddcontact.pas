@@ -20,7 +20,7 @@ type
     EditID: TEdit;
     EditFirst: TEdit;
     EditLast: TEdit;
-    LabelNew: TLabel;
+    LabelUserPrompt: TLabel;
     Label_ID: TLabel;
     LabelFirst: TLabel;
     LabelLast: TLabel;
@@ -28,10 +28,12 @@ type
     Panel2: TPanel;
     procedure ButtonCancelClick(Sender: TObject);
     procedure ButtonSaveClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
-
+     mEditMode : Boolean;
   public
-
+     function GetEditMode(): Boolean;
+     procedure SetEditMode(Value : Boolean);
   end;
 
 var
@@ -46,60 +48,61 @@ implementation
 
 procedure TFrmAddContact.ButtonSaveClick(Sender: TObject);
 var
-  insertId : Integer;
+  InsertId : Integer;
 begin
-  if (editFirst.Text <> '') or (editLast.Text <> '') then
+  if (editFirst.Text = '') and (editLast.Text = '') then
+      begin
+      MessageDlg('Must have at least one non blank name to save!', mtInformation, mbOkCancel, 0);
+      end
+  else
   begin
-
-    try
-      try
-        with DataModule1.QueryInsert do
+    if (mEditMode) then
         begin
-             Close();
-             Sql.Clear();
-             // NOTES:
-             //   To "Open" a query, Sql.text must be set to a select statment.
-             //   This is because open makes the result set available, and insert
-             //   statements do not have a result set.
-             //
-             //   The InsertSql.Text property also exists, apparently use Insert()
-             //    instead of ExecSQL
-             Sql.Text := 'INSERT INTO People(First, Last) ' +
-                         'VALUES(' + QuotedStr(EditFirst.Text) + ',' +
-                                     QuotedStr(EditLast.Text) + ')';
-             DebugLn(Sql.text);
-             ExecSql();           // Insert/Update use execSQL
-
-             // ApplyUpdates(); - Needed to save when editing an existing record
-             if (Transaction.Active) then
-                 begin
-                 // Cast the transaction property of the query to TSQLTr...
-                 TSQLTransaction(Transaction).Commit();
-                 end;
-
-
-             insertId := Utils.GetLastInsertID(DataModule1.QueryInsert);
-             EditID.Text := IntToStr(insertId);
-        end;
-      except
-        on E: Exception do
+        InsertId := StrToInt(EditId.Text);
+        Utils.EditUser(DataModule1.QueryInsert, InsertId, EditFirst.Text, EditLast.Text);
+        end
+    else
         begin
-          if (Datamodule1.QueryInsert.Transaction.Active) then
-              begin
-              TSQLTransaction(Datamodule1.QueryInsert.Transaction).Rollback();
-              end;
-          Utils.ShowException(E);
+        InsertId := Utils.AddUser(DataModule1.QueryInsert, EditFirst.Text, EditLast.Text);
+        EditID.Text := IntToStr(InsertId);
         end;
-      end;
-    finally
-      // Nothing needed here.
-    end;
+    Self.Close();
+
   end;
+end;
+
+procedure TFrmAddContact.FormShow(Sender: TObject);
+begin
+  if (mEditMode = true) then
+      begin
+        LabelUserPrompt.Caption := 'Editing Existing User:';
+        FrmAddContact.Caption := 'Edit Contact';
+      end
+  else
+      begin
+        LabelUserPrompt.Caption := 'Create New Contact?';
+        FrmAddContact.Caption := 'Add Contact';
+
+      end;
 end;
 
 procedure TFrmAddContact.ButtonCancelClick(Sender: TObject);
 begin
   Self.Close();
+end;
+
+function TFrmAddContact.GetEditMode(): Boolean;
+begin
+  GetEditMode := mEditMode;
+end;
+
+
+procedure TFrmAddContact.SetEditMode(Value : Boolean);
+begin
+  if (mEditMode <> Value) then
+      begin
+      mEditMode := value;
+      end;
 end;
 
 end.

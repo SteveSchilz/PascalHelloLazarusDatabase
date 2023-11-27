@@ -9,6 +9,8 @@ uses
 
   function SplitName(FullName : String) : TStringDynArray;
 
+  function AddUser(Q: TSQLQuery; First: String; Last: String): Integer;
+  procedure EditUser(Q: TSQLQuery; Id: Integer; First: String; Last: String);
   procedure DeleteUser(Q: TSQLQuery; SelectedID: Integer);
   procedure QueryPhones(Q: TSQLQuery; SelectedID: Integer);
   function GetLastInsertID(Q: TSQLQuery) : Integer;
@@ -54,6 +56,106 @@ end;
 //==============================================================================
 // Database Functions
 //==============================================================================
+(*
+ * Adds a new user to the database, returns newly created ID or -1 if failed.
+ * It is expected that at least one of First or Last is non-null
+ *
+ *)
+function AddUser(Q: TSQLQuery; First: String; Last: String) : Integer;
+
+begin
+    AddUser := -1;  // Default value if we fail.
+ try
+   try
+      Q.Close();
+      Q.Sql.Clear();
+      // NOTES:
+      //   To "Open" a query, Sql.text must be set to a select statment.
+      //   This is because open makes the result set available, and insert
+      //   statements do not have a result set.
+      //
+      //   The InsertSql.Text property also exists, apparently use Insert()
+      //    instead of ExecSQL
+      Q.Sql.Text := 'INSERT INTO People(First, Last) ' +
+                  'VALUES(' + QuotedStr(First) + ',' +
+                              QuotedStr(Last) + ')';
+      DebugLn(Q.Sql.text);
+      Q.ExecSql();           // Insert/Update use execSQL
+
+      // ApplyUpdates(); - Needed to save when editing an existing record
+      if (Q.Transaction.Active) then
+          begin
+          // Cast the transaction property of the query to TSQLTr...
+          TSQLTransaction(Q.Transaction).Commit();
+          end;
+
+
+      // Return the value to caller if succeeded
+      AddUser := Utils.GetLastInsertID(Q);
+   except
+     on E: Exception do
+     begin
+       if (Q.Transaction.Active) then
+           begin
+           TSQLTransaction(Q.Transaction).Rollback();
+           end;
+       Utils.ShowException(E);
+     end;
+   end;
+ finally
+   // Nothing needed here.
+ end;
+
+end;
+
+(*
+ * Edit an Existing User
+ * It is expected that at least one of First or Last is non-null
+ *
+ *)
+procedure EditUser(Q: TSQLQuery; Id:Integer; First: String; Last: String);
+
+begin
+ try
+   try
+      Q.Close();
+      Q.Sql.Clear();
+      // NOTES:
+      //   To "Open" a query, Sql.text must be set to a select statment.
+      //   This is because open makes the result set available, and insert
+      //   statements do not have a result set.
+      //
+      //   The InsertSql.Text property also exists, apparently use Insert()
+      //    instead of ExecSQL
+      Q.Sql.Text := 'UPDATE People ' +
+                  'SET First = ' + QuotedStr(First) + ',' +
+                       'Last = ' + QuotedStr(Last) +
+                  'WHERE Id =' + IntToStr(Id);
+      DebugLn(Q.Sql.text);
+      Q.ExecSql();           // Insert/Update use execSQL
+
+      // ApplyUpdates(); - Needed to save when editing an existing record
+      if (Q.Transaction.Active) then
+          begin
+          // Cast the transaction property of the query to TSQLTr...
+          TSQLTransaction(Q.Transaction).Commit();
+          end;
+
+   except
+     on E: Exception do
+     begin
+       if (Q.Transaction.Active) then
+           begin
+           TSQLTransaction(Q.Transaction).Rollback();
+           end;
+       Utils.ShowException(E);
+     end;
+   end;
+ finally
+   // Nothing needed here.
+ end;
+end;
+
 
 procedure DeleteUser(Q: TSQLQuery; SelectedID: Integer);
 var

@@ -18,6 +18,7 @@ type
 
   TFormContacts = class(TForm)
     ButtonDelete: TButton;
+    ButtonEdit: TButton;
     ButtonSearch: TButton;
     ButtonAdd: TButton;
     DBGridPhones: TDBGrid;
@@ -26,6 +27,7 @@ type
     LabelContact: TLabel;
     procedure ButtonAddClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
+    procedure ButtonEditClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
@@ -89,13 +91,38 @@ begin
 
 end;
 
+procedure TFormContacts.ButtonEditClick(Sender: TObject);
+var
+SelectedId: Integer;
+SelectedName: String;
+NamesArray : TStringDynArray;
+
+begin
+  SelectedId := GetSelectedId(DBGridPeople);
+  if (SelectedId = -1) then
+  begin
+     MessageDlg('No User Selected to Edit!', mtInformation, mbOKCancel, 0);
+  end
+  else
+  begin
+    SelectedName := GetSelectedName(DBGridPeople);
+    NamesArray := Utils.SplitName(SelectedName);
+    frmAddContact.EditId.Text := IntToStr(SelectedId);
+    frmAddContact.EditFirst.Text := NamesArray[0];
+    frmAddContact.EditLast.Text := NamesArray[1];
+    frmAddContact.SetEditMode(true);
+    frmAddContact.ShowModal();
+
+  end;
 end;
+
 
 procedure TFormContacts.ButtonDeleteClick(Sender: TObject);
 var
    SelectedId: Integer;
    SelectedName: String;
    Var OkToDelete: Integer;
+
 begin
     try
         try
