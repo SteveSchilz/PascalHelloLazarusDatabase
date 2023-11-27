@@ -20,6 +20,7 @@ type
     EditID: TEdit;
     EditFirst: TEdit;
     EditLast: TEdit;
+    LabelNew: TLabel;
     Label_ID: TLabel;
     LabelFirst: TLabel;
     LabelLast: TLabel;
