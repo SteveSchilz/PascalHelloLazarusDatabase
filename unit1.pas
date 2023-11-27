@@ -7,7 +7,7 @@ interface
 uses
   UnitData, UnitAddContact, Utils,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
-  StdCtrls, SQLDB, DB, SQLite3Conn,
+  StdCtrls, ExtCtrls, SQLDB, DB, SQLite3Conn,
   Types,
   LazLogger, LazLoggerBase;
 
@@ -25,6 +25,8 @@ type
     DBGridPeople: TDBGrid;
     EditSearch: TEdit;
     LabelContact: TLabel;
+    LabelDetails: TLabel;
+    PanelDetails: TPanel;
     procedure ButtonAddClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
     procedure ButtonEditClick(Sender: TObject);
@@ -32,6 +34,7 @@ type
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure ShowDBGridPhones(enable : Boolean);
     function GetSelectedId(Grid : TDBGrid) : Integer;
     function GetSelectedName(Grid : TDBGrid) : String;
     procedure HideIds();
@@ -141,6 +144,7 @@ begin
                 if (OkToDelete = mrOk) then
                    begin
                    Utils.DeleteUser(DataModule1.QueryInsert, SelectedId);
+                   ShowDBGridPhones(false);
                    end;
             end;
          end;
@@ -169,6 +173,7 @@ begin
              SelectedId := GetSelectedId(DBGridPeople);
              if (SelectedId <> -1) then
              begin
+                ShowDBGridPhones(true);
                 Utils.QueryPhones(DataModule1.QueryPhones, SelectedId);
              end;
           end;
@@ -196,11 +201,25 @@ begin
      DBGridPeople.Refresh();
      DBGridPhones.Refresh();
      HideIds();
+     ShowDBGridPhones(false);
 end;
 
 procedure TFormContacts.FormShow(Sender: TObject);
 begin
      HideIds();
+end;
+
+procedure TFormContacts.ShowDBGridPhones(Enable : Boolean);
+begin
+     if (Enable) then
+     begin
+          LabelDetails.Caption := 'Phone List For: ' +  GetSelectedName(DBGridPeople);
+          PanelDetails.Visible := true;
+     end
+     else
+     begin
+         PanelDetails.Visible:= false;
+     end;
 end;
 
 (*

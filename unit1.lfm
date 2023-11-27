@@ -9,6 +9,33 @@ object FormContacts: TFormContacts
   OnActivate = FormActivate
   OnShow = FormShow
   LCLVersion = '3.0.0.1'
+  object PanelDetails: TPanel
+    Left = 372
+    Height = 290
+    Top = 41
+    Width = 367
+    Caption = 'PanelDetails'
+    ClientHeight = 290
+    ClientWidth = 367
+    TabOrder = 6
+    object LabelDetails: TLabel
+      Left = 10
+      Height = 16
+      Top = 10
+      Width = 94
+      Caption = 'Phone List For: '
+    end
+    object DBGridPhones: TDBGrid
+      Left = 10
+      Height = 112
+      Top = 48
+      Width = 280
+      Color = clWindow
+      Columns = <>
+      DataSource = DataModule1.DSPhones
+      TabOrder = 0
+    end
+  end
   object DBGridPeople: TDBGrid
     Left = 112
     Height = 292
@@ -17,18 +44,8 @@ object FormContacts: TFormContacts
     Color = clWindow
     Columns = <>
     DataSource = DataModule1.DSPeople
-    TabOrder = 0
+    TabOrder = 5
     OnCellClick = DBGridPeopleCellClick
-  end
-  object DBGridPhones: TDBGrid
-    Left = 400
-    Height = 112
-    Top = 48
-    Width = 280
-    Color = clWindow
-    Columns = <>
-    DataSource = DataModule1.DSPhones
-    TabOrder = 1
   end
   object LabelContact: TLabel
     Left = 112
@@ -42,7 +59,7 @@ object FormContacts: TFormContacts
     Height = 22
     Top = 10
     Width = 115
-    TabOrder = 2
+    TabOrder = 0
     Text = 'Sam Schmam'
     TextHint = '(search for contacts)'
   end
@@ -53,7 +70,7 @@ object FormContacts: TFormContacts
     Width = 75
     Caption = 'Search'
     OnClick = ButtonSearchClick
-    TabOrder = 3
+    TabOrder = 1
   end
   object ButtonAdd: TButton
     Left = 400
@@ -62,7 +79,7 @@ object FormContacts: TFormContacts
     Width = 75
     Caption = 'Add'
     OnClick = ButtonAddClick
-    TabOrder = 4
+    TabOrder = 2
   end
   object ButtonDelete: TButton
     Left = 593
@@ -71,7 +88,7 @@ object FormContacts: TFormContacts
     Width = 75
     Caption = 'Delete'
     OnClick = ButtonDeleteClick
-    TabOrder = 5
+    TabOrder = 4
   end
   object ButtonEdit: TButton
     Left = 492
@@ -80,6 +97,6 @@ object FormContacts: TFormContacts
     Width = 75
     Caption = 'Edit'
     OnClick = ButtonEditClick
-    TabOrder = 6
+    TabOrder = 3
   end
 end
