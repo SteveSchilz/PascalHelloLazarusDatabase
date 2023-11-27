@@ -44,6 +44,8 @@ implementation
 
 
 procedure TFrmAddContact.ButtonSaveClick(Sender: TObject);
+var
+  insertId : Integer;
 begin
   if (editFirst.Text <> '') or (editLast.Text <> '') then
   begin
@@ -73,10 +75,18 @@ begin
                  // Cast the transaction property of the query to TSQLTr...
                  TSQLTransaction(Transaction).Commit();
                  end;
+
+
+             insertId := Utils.GetLastInsertID(DataModule1.QueryInsert);
+             EditID.Text := IntToStr(insertId);
         end;
       except
         on E: Exception do
         begin
+          if (Datamodule1.QueryInsert.Transaction.Active) then
+              begin
+              TSQLTransaction(Datamodule1.QueryInsert.Transaction).Rollback();
+              end;
           Utils.ShowException(E);
         end;
       end;

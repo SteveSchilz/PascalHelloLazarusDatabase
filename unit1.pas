@@ -105,8 +105,6 @@ var
    RowIndex: Integer;
    ColIndex: Integer;
    SelectedId: Integer;
-   QueryString: String;
-   FilterString: String;
 begin
   try
     try
@@ -118,25 +116,7 @@ begin
              DebugLn('Corresponding Record for Cell(%d, %d) = %d', [RowIndex, ColIndex, SelectedId]);
              if (SelectedId >= 1) then
              begin
-                with DataModule1.QueryPhones do
-                 begin
-                     Close();      // In Delphi you would set Active = false here
-                     sql.Clear();
-                     filterString := Format('PhoneNumbers.PersonId = %d', [SelectedId]);
-                     queryString := 'SELECT [PhoneNumbers].Id, ' +
-                             '[PhoneNumbers].PersonId, ' +
-                             '[PhoneTypes].Type, ' +
-                             '[PhoneNumbers].Number ' +
-                             'FROM PhoneNumbers ' +
-                             'INNER JOIN PhoneTypes ' +
-                             'ON [PhoneTypes].Id = [PhoneNumbers].PhoneTypeID ' +
-                             'WHERE ' + filterString;
-                     DebugLn('Filtering phone list on ', filterString);
-                     sql.text := queryString;
-                     execSql;
-                     Open();    //In Delphi you would set active:= true here
-
-                 end;
+                Utils.QueryPhones(DataModule1.QueryPhones, SelectedId);
              end;
           end;
     except
