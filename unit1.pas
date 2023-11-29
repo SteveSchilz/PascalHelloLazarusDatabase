@@ -17,6 +17,7 @@ type
   { TFormContacts }
 
   TFormContacts = class(TForm)
+    ButtonDelete: TButton;
     ButtonSearch: TButton;
     ButtonAdd: TButton;
     DBGridPhones: TDBGrid;
