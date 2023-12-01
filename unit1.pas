@@ -24,6 +24,7 @@ type
     DBGridPhones: TDBGrid;
     DBGridPeople: TDBGrid;
     EditSearch: TEdit;
+    Image1: TImage;
     LabelContact: TLabel;
     LabelDetails: TLabel;
     PanelDetails: TPanel;
@@ -33,6 +34,7 @@ type
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure ShowDBGridPhones(enable : Boolean);
     function GetSelectedId(Grid : TDBGrid) : Integer;
@@ -119,7 +121,6 @@ begin
   end;
 end;
 
-
 procedure TFormContacts.ButtonDeleteClick(Sender: TObject);
 var
    SelectedId: Integer;
@@ -204,8 +205,53 @@ begin
      ShowDBGridPhones(false);
 end;
 
+procedure TFormContacts.FormCreate(Sender: TObject);
+var
+   rs: TResourceStream;
+   img: TPicture;
+begin
+  try
+    begin
+    try
+        begin
+          // TODO:  Consider moving this functionality to UTILS, especially if
+          //        I need to load more pictures
+          //
+          // NOTES On Resources
+          // Resource file is resources.rc, defines which files are available
+          // This is compiled by {$R resources.rc} statement in hellocontacts.lpr
+          //
+          // On OSX I had to install the windres rc compiler, see Lazarus Install
+          // Notes in Obsidian.
+          //
+          rs := TResourceStream.Create(HInstance, 'CONTACTS_ICON', RT_RCDATA);
+          img := TPicture.Create();
+          img.LoadFromStream(rs);
+          Image1.Picture.assign(img);
+
+          // This is a simpler way to accomplish the same thing, but if it fails
+          // We only get an EAccessViolation, instead of A missing resource exception
+//          Image1.Picture.LoadFromResourceName(HInstance, 'CONTACTS_ICON');
+        end
+      finally
+      begin
+        img.Free();
+      end;
+    end
+
+  end;
+  except
+    on E: Exception Do
+    begin
+    Utils.ShowException(E);
+    end;
+
+  end;
+end;
+
 procedure TFormContacts.FormShow(Sender: TObject);
 begin
+
      HideIds();
 end;
 
@@ -222,9 +268,7 @@ begin
      end;
 end;
 
-(*
- * Returns the current selected ID for the given DB Grid, or -1 if none.
- *)
+//Returns the current selected ID for the given DB Grid, or -1 if none.
 function TFormContacts.GetSelectedId(Grid : TDBGrid) : Integer;
 var
    RowIndex: Integer;
@@ -237,9 +281,8 @@ begin
     GetSelectedId := grid.Datasource.DataSet.FieldByName('Id').AsInteger;
     end;
 end;
-(*
- * Returns the current selected Name for the given DB Grid, or empty string ('') if none.
- *)
+
+// Returns the current selected Name for the given DB Grid, or empty string ('') if none.
 function TFormContacts.GetSelectedName(Grid : TDBGrid) : String;
 var
    RowIndex: Integer;
@@ -252,8 +295,6 @@ begin
     GetSelectedName := grid.Datasource.DataSet.FieldByName('Name').AsString;
     end;
 end;
-
-
 
 (* HideIds
  * The Database grids contain IDs so we can extract the ID values to do filtering

@@ -72,6 +72,14 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="Utils"/>
       </Unit>
+      <Unit>
+        <Filename Value="resources.rc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="resources/contacts_dialer_icon.png"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -7,10 +7,11 @@ object FormContacts: TFormContacts
   ClientHeight = 404
   ClientWidth = 988
   OnActivate = FormActivate
+  OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '3.0.0.1'
   object PanelDetails: TPanel
-    Left = 372
+    Left = 412
     Height = 290
     Top = 41
     Width = 367
@@ -37,7 +38,7 @@ object FormContacts: TFormContacts
     end
   end
   object DBGridPeople: TDBGrid
-    Left = 112
+    Left = 152
     Height = 292
     Top = 48
     Width = 219
@@ -48,14 +49,14 @@ object FormContacts: TFormContacts
     OnCellClick = DBGridPeopleCellClick
   end
   object LabelContact: TLabel
-    Left = 112
+    Left = 152
     Height = 16
     Top = 16
     Width = 52
     Caption = 'Contact:'
   end
   object EditSearch: TEdit
-    Left = 176
+    Left = 216
     Height = 22
     Top = 10
     Width = 115
@@ -64,7 +65,7 @@ object FormContacts: TFormContacts
     TextHint = '(search for contacts)'
   end
   object ButtonSearch: TButton
-    Left = 312
+    Left = 352
     Height = 25
     Top = 7
     Width = 75
@@ -73,7 +74,7 @@ object FormContacts: TFormContacts
     TabOrder = 1
   end
   object ButtonAdd: TButton
-    Left = 400
+    Left = 440
     Height = 25
     Top = 7
     Width = 75
@@ -82,7 +83,7 @@ object FormContacts: TFormContacts
     TabOrder = 2
   end
   object ButtonDelete: TButton
-    Left = 593
+    Left = 633
     Height = 25
     Top = 7
     Width = 75
@@ -91,12 +92,20 @@ object FormContacts: TFormContacts
     TabOrder = 4
   end
   object ButtonEdit: TButton
-    Left = 492
+    Left = 532
     Height = 25
     Top = 7
     Width = 75
     Caption = 'Edit'
     OnClick = ButtonEditClick
     TabOrder = 3
+  end
+  object Image1: TImage
+    Left = 8
+    Height = 128
+    Top = 8
+    Width = 128
+    AutoSize = True
+    Stretch = True
   end
 end

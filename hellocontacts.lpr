@@ -1,6 +1,8 @@
 program helloContacts;
 
 {$mode objfpc}{$H+}
+{$R resources.rc} // This compiles resources.rc to resources.res using windres compiler
+{$R *.res}        // This loads the project icon, which is a Lazarus Resource
 
 uses
   {$IFDEF UNIX}
@@ -12,7 +14,6 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms, unit1, unitData, unitAddContact, Utils;
 
-{$R *.res}
 
 begin
   RequireDerivedFormResource:=True;
