@@ -80,7 +80,7 @@ object FrmAddContact: TFrmAddContact
     object EditFirst: TEdit
       Left = 61
       Height = 22
-      Top = 79
+      Top = 80
       Width = 249
       TabOrder = 1
       TextHint = 'First Name'
@@ -88,7 +88,7 @@ object FrmAddContact: TFrmAddContact
     object EditLast: TEdit
       Left = 61
       Height = 22
-      Top = 114
+      Top = 115
       Width = 249
       TabOrder = 2
       TextHint = 'Last Name'
@@ -96,7 +96,7 @@ object FrmAddContact: TFrmAddContact
     object LabelUserPrompt: TLabel
       Left = 20
       Height = 16
-      Top = 11
+      Top = 10
       Width = 129
       Caption = 'Create New Contact?'
     end

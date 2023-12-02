@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  UnitData, UnitAddContact, Utils,
+  UnitData, UnitAddContact, UnitAddPhone, Utils,
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, DBGrids,
   StdCtrls, ExtCtrls, SQLDB, DB, SQLite3Conn,
   Types,
@@ -17,10 +17,13 @@ type
   { TFormContacts }
 
   TFormContacts = class(TForm)
-    ButtonDelete: TButton;
-    ButtonEdit: TButton;
     ButtonSearch: TButton;
     ButtonAdd: TButton;
+    ButtonEdit: TButton;
+    ButtonDelete: TButton;
+    ButtonAddPhone: TButton;
+    ButtonEditPhone: TButton;
+    ButtonDeletePhone: TButton;
     DBGridPhones: TDBGrid;
     DBGridPeople: TDBGrid;
     EditSearch: TEdit;
@@ -29,6 +32,7 @@ type
     LabelDetails: TLabel;
     PanelDetails: TPanel;
     procedure ButtonAddClick(Sender: TObject);
+    procedure ButtonAddPhoneClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
     procedure ButtonEditClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
@@ -94,6 +98,11 @@ begin
     frmAddContact.SetEditMode(false);
     frmAddContact.ShowModal();
 
+end;
+
+procedure TFormContacts.ButtonAddPhoneClick(Sender: TObject);
+begin
+     frmAddPhone.ShowModal();
 end;
 
 procedure TFormContacts.ButtonEditClick(Sender: TObject);

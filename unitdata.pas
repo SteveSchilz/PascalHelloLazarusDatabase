@@ -21,6 +21,7 @@ type
     QueryInsert: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
+    procedure EnsureDatabasePresent();
     procedure EnsureMainQueriesActive();
     procedure RefreshAllData();
   private
@@ -38,47 +39,50 @@ implementation
 { TDataModule1 }
 
 procedure TDataModule1.DataModuleCreate(Sender: TObject);
+begin
+     EnsureDatabasePresent();
+
+end;
+
+procedure TDataModule1.EnsureDatabasePresent();
 const
   DBFileName = 'helloContacts.db';
 var
   AppConfigDir: String;
   DBPathName: String;
-  DoesExist: Boolean;
 
 begin
-  AppConfigDir := GetAppConfigDir(False);
-  DBPathName := AppConfigDir + DBFileName;
-  DebugLn('DataBase File: ', DBPathName);
+     AppConfigDir := GetAppConfigDir(False);
+     DBPathName := AppConfigDir + DBFileName;
+     DebugLn('DataBase File: ', DBPathName);
 
-  try
+     try
 
-     if (not DirectoryExists(AppConfigDir)) then
-     begin
-          CreateDir(AppConfigDir);
-          DebugLn('Created App Config Directory', AppConfigDir);
-     end;
+        if (not DirectoryExists(AppConfigDir)) then
+        begin
+             CreateDir(AppConfigDir);
+             DebugLn('Created App Config Directory', AppConfigDir);
+        end;
 
-     if (not FileExists(DBPathName)) then
-     begin
-         SQLite3Connection1.DatabaseName := DBPathName;
-         SQLite3Connection1.Connected:= true;
-         if (SQLite3Connection1.Connected = true) then
-         begin
-             DebugLn('Successfully created Database File: ', DBPathName);
-         end
-         else
-         begin
-         DebugLn('Database File Not Connected!!: ', DBPathName);
-         end;
-     end;
+        if (not FileExists(DBPathName)) then
+        begin
+            SQLite3Connection1.DatabaseName := DBPathName;
+            SQLite3Connection1.Connected:= true;
+            if (SQLite3Connection1.Connected = true) then
+            begin
+                DebugLn('Successfully created Database File: ', DBPathName);
+                // TODO: Import schema for database
+            end
+            else
+            begin
+            DebugLn('Database File Not Connected!!: ', DBPathName);
+            end;
+        end;
 
-    except
-      on E: Exception do
-          begin
-          Utils.ShowException(E);
-          end;
-    end;
-
+       except
+         on E: Exception do
+             Utils.ShowException(E);
+       end;
 end;
 
 // Called when main form activates to be sure queries are active

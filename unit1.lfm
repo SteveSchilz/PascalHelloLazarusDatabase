@@ -1,11 +1,11 @@
 object FormContacts: TFormContacts
   Left = 1586
-  Height = 404
+  Height = 391
   Top = -865
-  Width = 988
+  Width = 864
   Caption = 'Hello Contacts DB'
-  ClientHeight = 404
-  ClientWidth = 988
+  ClientHeight = 391
+  ClientWidth = 864
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnShow = FormShow
@@ -28,13 +28,38 @@ object FormContacts: TFormContacts
     end
     object DBGridPhones: TDBGrid
       Left = 10
-      Height = 112
+      Height = 181
       Top = 48
       Width = 280
       Color = clWindow
       Columns = <>
       DataSource = DataModule1.DSPhones
       TabOrder = 0
+    end
+    object ButtonAddPhone: TButton
+      Left = 21
+      Height = 25
+      Top = 248
+      Width = 75
+      Caption = 'Add'
+      OnClick = ButtonAddPhoneClick
+      TabOrder = 1
+    end
+    object ButtonEditPhone: TButton
+      Left = 120
+      Height = 25
+      Top = 248
+      Width = 75
+      Caption = 'Edit'
+      TabOrder = 2
+    end
+    object ButtonDeletePhone: TButton
+      Left = 235
+      Height = 25
+      Top = 248
+      Width = 75
+      Caption = 'Delete'
+      TabOrder = 3
     end
   end
   object DBGridPeople: TDBGrid

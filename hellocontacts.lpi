@@ -80,6 +80,14 @@
         <Filename Value="resources/contacts_dialer_icon.png"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="unitaddphone.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrmAddPhone"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="UnitAddPHone"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

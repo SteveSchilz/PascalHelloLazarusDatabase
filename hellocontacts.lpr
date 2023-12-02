@@ -12,7 +12,7 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, unit1, unitData, unitAddContact, Utils;
+  Forms, unit1, unitData, unitAddContact, unitAddPhone, Utils;
 
 
 begin
@@ -22,6 +22,7 @@ begin
   Application.CreateForm(TFormContacts, FormContacts);
   Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TFrmAddContact, FrmAddContact);
+  Application.CreateForm(TFrmAddPhone, FrmAddPhone);
   Application.Run;
 end.
 
