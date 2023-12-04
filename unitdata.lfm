@@ -113,4 +113,11 @@ object DataModule1: TDataModule1
     Left = 47
     Top = 250
   end
+  object QueryPhoneType: TSQLQuery
+    FieldDefs = <>
+    Params = <>
+    Macros = <>
+    Left = 154
+    Top = 263
+  end
 end

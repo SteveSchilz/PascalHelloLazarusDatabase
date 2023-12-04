@@ -17,10 +17,12 @@ type
     DSPhones: TDataSource;
     QueryPeople: TSQLQuery;
     QueryPhones: TSQLQuery;
+    QueryPhoneType: TSQLQuery;
     SQLite3Connection1: TSQLite3Connection;
     QueryInsert: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     procedure DataModuleCreate(Sender: TObject);
+    procedure InitializePhoneTypesQuery();
     procedure EnsureDatabasePresent();
     procedure EnsureMainQueriesActive();
     procedure RefreshAllData();
@@ -42,6 +44,7 @@ procedure TDataModule1.DataModuleCreate(Sender: TObject);
 begin
      EnsureDatabasePresent();
 
+     InitializePhoneTypesQuery();
 end;
 
 procedure TDataModule1.EnsureDatabasePresent();
@@ -99,6 +102,13 @@ begin
        QueryPhones.Active := true;
      end;
 
+end;
+
+
+procedure TDataModule1.InitializePhoneTypesQuery();
+begin
+    queryPhoneType.Database := SQLite3Connection1;
+    queryPhoneType.SQL.Text := 'SELECT Type FROM PhoneTypes';
 end;
 
 // Allows customers to update all data fields without needing to know our
