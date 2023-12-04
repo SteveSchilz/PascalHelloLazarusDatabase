@@ -6,6 +6,7 @@ object FrmAddPhone: TFrmAddPhone
   Caption = 'Add Phone'
   ClientHeight = 240
   ClientWidth = 320
+  OnCreate = FormCreate
   LCLVersion = '3.0.0.1'
   object Label1: TLabel
     Left = 20

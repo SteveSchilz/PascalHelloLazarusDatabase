@@ -1,2 +1,3 @@
 CONTACTS_ICON RCDATA "./resources/contacts_dialer_icon.png"
+DATABASE_SCHEMA RCDATA "./resources/helloContacts-SCHEMA.sql"
 

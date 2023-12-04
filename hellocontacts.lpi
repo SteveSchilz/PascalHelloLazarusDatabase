@@ -88,6 +88,10 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnitAddPHone"/>
       </Unit>
+      <Unit>
+        <Filename Value="resources/helloContacts-SCHEMA.sql"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -6,9 +6,8 @@ object DataModule1: TDataModule1
   VerticalOffset = 25
   Width = 258
   object SQLite3Connection1: TSQLite3Connection
-    Connected = True
+    Connected = False
     LoginPrompt = False
-    DatabaseName = '/Users/steve/Public/Dev/Pascal/HelloContactsDB/database/helloContacts.db'
     KeepConnection = False
     Transaction = SQLTransaction1
     AlwaysUseBigint = False
@@ -16,7 +15,7 @@ object DataModule1: TDataModule1
     Top = 24
   end
   object SQLTransaction1: TSQLTransaction
-    Active = True
+    Active = False
     Database = SQLite3Connection1
     Left = 168
     Top = 24
@@ -36,7 +35,6 @@ object DataModule1: TDataModule1
         Precision = -1
         Size = 255
       end>
-    Active = True
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
@@ -75,7 +73,6 @@ object DataModule1: TDataModule1
         DataType = ftInteger
         Precision = -1
       end>
-    Active = True
     Database = SQLite3Connection1
     Transaction = SQLTransaction1
     SQL.Strings = (
