@@ -8,6 +8,7 @@ uses
   Classes, SQLDB, StrUtils, SysUtils, Types, LazLogger;
 
   function SplitName(FullName : String) : TStringDynArray;
+  function ValidatePhone(number: String) : Boolean;
 
   function AddUser(Q: TSQLQuery; First: String; Last: String): Integer;
   procedure EditUser(Q: TSQLQuery; Id: Integer; First: String; Last: String);
@@ -53,6 +54,31 @@ begin
 end;
 
 
+function ValidatePhone(number: String) : Boolean;
+var
+    phNumber : Int64;
+begin
+    result := TryStrToInt64(number, phNumber);
+    if (result = true) then
+        begin
+        // In a real app you would split out the prefix and
+        // Validate the area code, and perhaps check for invalid
+        // numbers as well.
+        //
+        // This is just a simple check that we have 10 digits
+        //             9168490226
+        if (phNumber <= 999999999)  then
+           begin
+           result := false;
+           end;
+        // More than 10 digits is also an error
+        //               9168490226
+        if (phNumber >= 10000000000) then
+           begin
+           result := false;
+           end;
+        end;
+end;
 //==============================================================================
 // Database Functions
 //==============================================================================

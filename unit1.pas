@@ -35,6 +35,7 @@ type
     procedure ButtonAddPhoneClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
     procedure ButtonEditClick(Sender: TObject);
+    procedure ButtonEditPhoneClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
     procedure DBGridPeopleCellClick(Column: TColumn);
     procedure FormActivate(Sender: TObject);
@@ -42,7 +43,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure ShowDBGridPhones(enable : Boolean);
     function GetSelectedId(Grid : TDBGrid) : Integer;
-    function GetSelectedName(Grid : TDBGrid) : String;
+    function GetSelectedFieldByName(Grid : TDBGrid; Field: String) : String;
     procedure HideIds();
   private
 
@@ -102,6 +103,7 @@ end;
 
 procedure TFormContacts.ButtonAddPhoneClick(Sender: TObject);
 begin
+     frmAddPhone.SetEditMode(false);
      frmAddPhone.ShowModal();
 end;
 
@@ -119,7 +121,7 @@ begin
   end
   else
   begin
-    SelectedName := GetSelectedName(DBGridPeople);
+    SelectedName := GetSelectedFieldByName(DBGridPeople, 'Name');
     NamesArray := Utils.SplitName(SelectedName);
     frmAddContact.EditId.Text := IntToStr(SelectedId);
     frmAddContact.EditFirst.Text := NamesArray[0];
@@ -128,6 +130,29 @@ begin
     frmAddContact.ShowModal();
 
   end;
+end;
+
+procedure TFormContacts.ButtonEditPhoneClick(Sender: TObject);
+var
+   SelectedId: Integer;
+   SelectedPhone: String;
+
+begin
+  SelectedId := GetSelectedId(DBGridPhones);
+  if (SelectedId = -1) then
+  begin
+     MessageDlg('No Phone Number Selected to Edit!', mtInformation, mbOKCancel, 0);
+  end
+  else
+  begin
+    SelectedPhone := GetSelectedFieldByName(DBGridPhones, 'Phone');
+  //  frmAddPhone.EditId.Text := IntToStr(SelectedId);
+    frmAddPhone.EditNumber.Text := SelectedPhone;
+    frmAddPhone.SetEditMode(true);
+    frmAddPhone.ShowModal();
+
+  end;
+
 end;
 
 procedure TFormContacts.ButtonDeleteClick(Sender: TObject);
@@ -147,7 +172,7 @@ begin
             end
             else
             begin
-                SelectedName := GetSelectedName(DBGridPeople);
+                SelectedName := GetSelectedFieldByName(DBGridPeople, 'Name');
                 OkToDelete := MessageDlg('OK to Delete ' + SelectedName  + '?' + #13#10#13#10 +
                                          '(All of their phone numbers will be deleted!)',
                                          mtConfirmation, mbOKCancel, 0);
@@ -268,7 +293,7 @@ procedure TFormContacts.ShowDBGridPhones(Enable : Boolean);
 begin
      if (Enable) then
      begin
-          LabelDetails.Caption := 'Phone List For: ' +  GetSelectedName(DBGridPeople);
+          LabelDetails.Caption := 'Phone List For: ' +  GetSelectedFieldByName(DBGridPeople, 'Name');
           PanelDetails.Visible := true;
      end
      else
@@ -291,17 +316,17 @@ begin
     end;
 end;
 
-// Returns the current selected Name for the given DB Grid, or empty string ('') if none.
-function TFormContacts.GetSelectedName(Grid : TDBGrid) : String;
+// Returns the current selected Field for the given DB Grid, or empty string ('') if none.
+function TFormContacts.GetSelectedFieldByName(Grid : TDBGrid; Field: String) : String;
 var
    RowIndex: Integer;
 begin
-  GetSelectedName := '';  // Default if nothing found
+  GetSelectedFieldByName := '';  // Default if nothing found
 
   RowIndex := grid.DataSource.DataSet.RecNo;
   if (RowIndex >= 1) and (RowIndex <= grid.DataSource.DataSet.RecordCount) then
     begin
-    GetSelectedName := grid.Datasource.DataSet.FieldByName('Name').AsString;
+    GetSelectedFieldByName := grid.Datasource.DataSet.FieldByName(Field).AsString;
     end;
 end;
 

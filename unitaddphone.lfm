@@ -7,30 +7,31 @@ object FrmAddPhone: TFrmAddPhone
   ClientHeight = 240
   ClientWidth = 320
   OnCreate = FormCreate
+  OnShow = FormShow
   LCLVersion = '3.0.0.1'
-  object Label1: TLabel
+  object LabelUserPrompt: TLabel
     Left = 20
     Height = 16
     Top = 10
     Width = 103
     Caption = 'Add New Phone?'
   end
-  object ComboBox1: TComboBox
+  object ComboBoxType: TComboBox
     Left = 83
     Height = 20
     Top = 77
     Width = 100
     ItemHeight = 19
     TabOrder = 0
-    Text = 'ComboBox1'
+    Text = 'ComboBoxType'
   end
-  object Edit1: TEdit
+  object EditNumber: TEdit
     Left = 80
     Height = 22
     Top = 115
     Width = 80
     TabOrder = 1
-    Text = 'Edit1'
+    Text = '(xxx) xxx-xxx'
   end
   object LabelType: TLabel
     Left = 15
@@ -46,21 +47,22 @@ object FrmAddPhone: TFrmAddPhone
     Width = 52
     Caption = 'Number:'
   end
-  object ButtonAddPhone: TButton
+  object ButtonSave: TButton
     Left = 62
     Height = 25
     Top = 190
     Width = 75
     Caption = 'Save'
+    OnClick = ButtonSaveClick
     TabOrder = 2
   end
-  object ButtonCancelPhone: TButton
+  object ButtonCancel: TButton
     Left = 190
     Height = 25
     Top = 190
     Width = 75
     Caption = 'Cancel'
-    OnClick = ButtonCancelPhoneClick
+    OnClick = ButtonCancelClick
     TabOrder = 3
   end
 end

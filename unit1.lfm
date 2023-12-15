@@ -51,6 +51,7 @@ object FormContacts: TFormContacts
       Top = 248
       Width = 75
       Caption = 'Edit'
+      OnClick = ButtonEditPhoneClick
       TabOrder = 2
     end
     object ButtonDeletePhone: TButton

@@ -1,10 +1,9 @@
 # TODO List For Hello Contacts
 
 
-1. Wire Up EditPhones Button to initialize type/phone, show form
-   * Modify form title for Add/Edit*
+2. Figure out how to get the index out of the Dropdown. May Need to add value parameter? 
+1. Add the SQL to Add/Edit Phone Numbers 
 2. Wire up DeletePhones Button
-2. Figure out Dropdown
 3. Connect Save Button onf form 
 
 
@@ -12,11 +11,16 @@ Make sure all SQL is in code? Currently some in the queries....
 
 
 **Optional/Extra**
+ * Do Some Real Phone Number Validation
+ * Validate Names against SQL injection Techniques
  * Enable Database Logging?
  * Disable Grid Editing on the Main People Form
  * Add pictures on Secondary forms?
  * Style the forms and buttons a bit? 
    
+   
+-------------------
+Date: 12/14/23  Topic:  Some Work on FormAddPhone
    
 Date: 12/03/23  Topic:  Initialize Database, Dropdown field
 
