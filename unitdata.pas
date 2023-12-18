@@ -146,10 +146,27 @@ end;
 
 
 procedure TDataModule1.InitializePhoneTypesQuery();
+var
+  Q: TSQLQuery;
 begin
-    queryPhoneType.Database := SQLite3Connection1;
-    queryPhoneType.SQL.Text := 'SELECT Type FROM PhoneTypes';
-end;
+    Q := QueryPhoneType;
+    Q.Database := SQLite3Connection1;
+    Q.Close();
+    Q.SQL.Clear();
+    Q.SQL.Text := 'SELECT Id, Type FROM PhoneTypes';
+    try
+        Q.ExecSQL();
+        Q.Open();
+        DebugLn(Format('Record Count %d', [Q.RecordCount]));
+
+    except
+       on E: Exception do
+         begin
+           Utils.ShowException(E);
+         end;
+     end;    end;
+
+
 
 // Allows customers to update all data fields without needing to know our
 // Internal Details

@@ -34,6 +34,7 @@ type
     procedure ButtonAddClick(Sender: TObject);
     procedure ButtonAddPhoneClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
+    procedure ButtonDeletePhoneClick(Sender: TObject);
     procedure ButtonEditClick(Sender: TObject);
     procedure ButtonEditPhoneClick(Sender: TObject);
     procedure ButtonSearchClick(Sender: TObject);
@@ -102,9 +103,20 @@ begin
 end;
 
 procedure TFormContacts.ButtonAddPhoneClick(Sender: TObject);
+var
+   personId : Integer;
+
 begin
+    personId := GetSelectedId(DBGridPeople);
+    if (personId = -1) then
+    begin
+       exit;
+     end;
      frmAddPhone.SetEditMode(false);
+     frmAddPhone.SetPersonId(personId);
+     frmAddPhone.SetPhoneTypeId(1);
      frmAddPhone.ShowModal();
+
 end;
 
 procedure TFormContacts.ButtonEditClick(Sender: TObject);
@@ -145,9 +157,17 @@ begin
   end
   else
   begin
-    SelectedPhone := GetSelectedFieldByName(DBGridPhones, 'Phone');
-  //  frmAddPhone.EditId.Text := IntToStr(SelectedId);
+    frmAddPhone.SetPhoneId(SelectedId);
+
+    SelectedPhone := GetSelectedFieldByName(DBGridPhones, 'Number');
     frmAddPhone.EditNumber.Text := SelectedPhone;
+
+    SelectedId := StrToInt(GetSelectedFieldByName(DBGridPhones, 'PersonId'));
+    frmAddPhone.SetPersonId(SelectedId);
+
+    SelectedId := StrToInt(GetSelectedFieldByName(DBGridPhones, 'PhoneTypeId'));
+    frmAddPhone.SetPhoneTypeId(SelectedId);
+
     frmAddPhone.SetEditMode(true);
     frmAddPhone.ShowModal();
 
@@ -194,6 +214,47 @@ begin
         DBGridPeople.Refresh();
         HideIds();
     end;
+end;
+
+procedure TFormContacts.ButtonDeletePhoneClick(Sender: TObject);
+   var
+      SelectedId: Integer;
+      SelectedNumber: String;
+      Var OkToDelete: Integer;
+
+   begin
+       try
+           try
+           begin
+               SelectedId := GetSelectedId(DBGridPhones);
+               if (SelectedId = -1) then
+               begin
+                  MessageDlg('No Phone Selected to delete!', mtInformation, mbOKCancel, 0);
+               end
+               else
+               begin
+                   SelectedNumber := GetSelectedFieldByName(DBGridPhones, 'Number');
+                   OkToDelete := MessageDlg('OK to Delete ' + SelectedNumber  + '? ',
+                                            mtConfirmation, mbOKCancel, 0);
+                   if (OkToDelete = mrOk) then
+                      begin
+                      Utils.DeletePhone(DataModule1.QueryInsert, SelectedId);
+                      DBGridPhones.Refresh();
+                      end;
+               end;
+            end;
+        except
+            on E: Exception do
+            begin
+                Utils.ShowException(E);
+            end;
+        end;
+       finally
+           DataModule1.QueryPhones.Refresh();
+           DBGridPhones.Refresh();
+           HideIds();
+       end;
+
 end;
 
 // When the DB Grid is clicked, it filters the phones list to the selected
@@ -347,7 +408,8 @@ begin
      if (DBGridPhones.Columns.Count >= 1) and (DBGridPhones.Columns[0].Visible) then
      begin
          DBGridPhones.Columns[0].Visible := false;  // Hide Phone Id Column
-         DBGridPhones.Columns[1].Visible := false;  // Hide PersonId column
+         DBGridPhones.Columns[1].Visible := false;  // Hide PersonId Column
+         DBGridPhones.Columns[2].Visible := false;  // Hide PhoneTypeId Column
          DBGridPhones.Refresh();
      end;
 

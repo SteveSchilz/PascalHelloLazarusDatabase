@@ -79,6 +79,7 @@ object DataModule1: TDataModule1
       'SELECT'
       '    [PhoneNumbers].Id,'
       '    [PhoneNumbers].PersonId,'
+      '    [PhoneNumbers].PhoneTypeId,'
       '    [PhoneTypes].Type,'
       '    [PhoneNumbers].Number'
       ' FROM PhoneNumbers'
